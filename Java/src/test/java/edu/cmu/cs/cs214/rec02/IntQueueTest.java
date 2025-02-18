@@ -1,8 +1,5 @@
 package edu.cmu.cs.cs214.rec02;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,8 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * TODO: 
@@ -46,31 +47,33 @@ public class IntQueueTest {
 
     @Test
     public void testIsEmpty() {
-        // This is an example unit test
         assertTrue(mQueue.isEmpty());
     }
 
     @Test
     public void testNotEmpty() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.enqueue(1);
+        assertFalse(mQueue.isEmpty());
     }
 
     @Test
     public void testPeekEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        try {
+            mQueue.peek();
+            fail("Exception should have been thrown");
+        } catch (IllegalStateException e) {
+            assertEquals("Queue is empty", e.getMessage());
+        }
     }
 
     @Test
     public void testPeekNoEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.enqueue(1);
+        assertEquals(Integer.valueOf(1), mQueue.peek());
     }
 
     @Test
     public void testEnqueue() {
-        // This is an example unit test
         for (int i = 0; i < testList.size(); i++) {
             mQueue.enqueue(testList.get(i));
             assertEquals(testList.get(0), mQueue.peek());
@@ -80,13 +83,18 @@ public class IntQueueTest {
 
     @Test
     public void testDequeue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        for (int i = 0; i < testList.size(); i++) {
+            mQueue.enqueue(testList.get(i));
+        }
+
+        for (int i = 0; i < testList.size(); i++) {
+            assertEquals(testList.get(i), mQueue.dequeue());
+            assertEquals(testList.size() - i - 1, mQueue.size());
+        }
     }
 
     @Test
     public void testContent() throws IOException {
-        // This is an example unit test
         InputStream in = new FileInputStream("src/test/resources/data.txt");
         try (Scanner scanner = new Scanner(in)) {
             scanner.useDelimiter("\\s*fish\\s*");
@@ -100,10 +108,8 @@ public class IntQueueTest {
             }
 
             for (Integer result : correctResult) {
-                assertEquals(mQueue.dequeue(), result);
-            }
+                assertEquals(result, mQueue.dequeue());
+            }   
         }
     }
-
-
 }
