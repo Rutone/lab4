@@ -1,6 +1,7 @@
 package edu.cmu.cs.cs214.rec02;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 /**
  * A resizable-array implementation of the {@link IntQueue} interface. The head of
@@ -45,6 +46,7 @@ public class ArrayIntQueue implements IntQueue {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void clear() {
         Arrays.fill(elementData, 0);
         size = 0;
@@ -52,6 +54,7 @@ public class ArrayIntQueue implements IntQueue {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Integer dequeue() {
         if (isEmpty()) {
             return null;
@@ -73,11 +76,14 @@ public class ArrayIntQueue implements IntQueue {
 
     /** {@inheritDoc} */
     public boolean isEmpty() {
-        return size >= 0;
+        return size == 0;
     }
 
     /** {@inheritDoc} */
     public Integer peek() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
         return elementData[head];
     }
 
